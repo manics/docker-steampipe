@@ -17,5 +17,6 @@ USER steampipe
 # Install turbot/* plugins @latest
 RUN steampipe plugin install steampipe && \
     steampipe plugin install $(steampipe query "SELECT name FROM steampipe_registry_plugin WHERE name LIKE 'turbot/%';" --output=csv --header=false)
-
-VOLUME /home/steampipe/.steampipe/config
+# CSV plugin causes steampipe to imediately fail if it's not configured 😞
+# Error: Plugin Listing failed - failed to start plugin 'csv': paths must be configured
+RUN mv .steampipe/config/csv.spc .steampipe/config/csv.spc.disable
