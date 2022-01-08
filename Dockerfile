@@ -6,7 +6,7 @@ RUN apt-get update && \
         curl \
         vim
 
-ARG VERSION=0.11.0
+ARG VERSION=0.11.1
 
 RUN curl -sfL https://github.com/turbot/steampipe/releases/download/v${VERSION}/steampipe_linux_amd64.tar.gz | tar -xz -C /usr/local/bin/ steampipe
 RUN useradd -m steampipe
@@ -16,7 +16,5 @@ USER steampipe
 
 # Install turbot/* plugins @latest
 RUN steampipe plugin install steampipe && \
-    steampipe plugin install $(steampipe query "SELECT name FROM steampipe_registry_plugin WHERE name LIKE 'turbot/%';" --output=csv --header=false)
-# CSV plugin causes steampipe to immediately fail if it's not configured 😞
-# https://github.com/turbot/steampipe-plugin-csv/issues/11
-RUN mv .steampipe/config/csv.spc .steampipe/config/csv.spc.disable
+    steampipe plugin install $(steampipe query "SELECT name FROM steampipe_registry_plugin WHERE name LIKE 'turbot/%';" --output=csv --header=false) && \
+    steampipe plugin list
