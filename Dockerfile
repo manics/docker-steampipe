@@ -6,7 +6,7 @@ RUN apt-get update && \
         curl \
         vim
 
-ARG VERSION=0.11.1
+ARG VERSION=0.12.0
 
 RUN curl -sfL https://github.com/turbot/steampipe/releases/download/v${VERSION}/steampipe_linux_amd64.tar.gz | tar -xz -C /usr/local/bin/ steampipe
 RUN useradd -m steampipe
